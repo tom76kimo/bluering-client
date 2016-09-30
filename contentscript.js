@@ -141,7 +141,6 @@ $loadingImg.src = imgURL;
 $loadingImg.classList += ' bluering-loading';
 
 var $list = document.querySelector('.pinned-repos-list');
-$list.appendChild(createContributeElement('yahoo/fluxible-immutable-utils', 'description...', 1052));
 $list.appendChild($loadingImg);
 
 var isFetching = false;
