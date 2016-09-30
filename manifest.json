@@ -1,0 +1,34 @@
+{
+    "manifest_version": 2,
+
+    "name": "Bluering Extension",
+    "description": "Fetch all contributes by user",
+    "version": "0.0.1",
+
+    "permissions": [
+        "activeTab",
+        "https://3fe95389.ngrok.io/"
+    ],
+
+    "web_accessible_resources": [
+        "loading.svg"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://github.com/*"
+            ],
+            "css": [
+                "main.css"
+            ],
+            "js": [
+                "bower_components/es6-promise/es6-promise.min.js",
+                "bower_components/fetch/fetch.js",
+                "contentscript.js"
+            ],
+            "run_at": "document_end",
+            "all_frames": false
+        }
+    ]
+}
