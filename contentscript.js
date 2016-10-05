@@ -4,7 +4,7 @@ var endPoint = 'https://3fe95389.ngrok.io/user/';
 var $userName = document.querySelector('.vcard-username');
 var userName = $userName.innerHTML.trim();
 
-var results = [];
+var allTaskEnd = false;
 
 function getLastYearDate() {
   var date = new Date();
@@ -106,8 +106,18 @@ function fetchData(year, part) {
         return response.json()
       }).then(function(json) {
         if (Array.isArray(json)) {
-          json.forEach(function (title) {
-            $list.insertBefore(createContributeElement(title, 'description...', 1052), $loadingImg);
+          json.forEach(function (entry) {
+            var title = entry.name;
+            var desc = entry.description;
+            var stars = entry.stars;
+            // $list.insertBefore(createContributeElement(title, desc, stars), $loadingImg);
+            fetch('https://api.github.com/repos/' + title)
+              .then(function (response) {
+                return response.json();
+              })
+              .then(function(json) {
+                console.log('===', title, json);
+              })
           });
           renewYearPart();
           isFetching = false;
@@ -119,6 +129,9 @@ function fetchData(year, part) {
 }
 
 function renewYearPart() {
+  if (year <= 0) {
+    allTaskEnd = true;
+  }
   if (part == 1) {
     year -= 1;
     part = 4;
@@ -140,13 +153,16 @@ var $loadingImg = document.createElement('img');
 $loadingImg.src = imgURL;
 $loadingImg.classList += ' bluering-loading';
 
-var $list = document.querySelector('.pinned-repos-list');
-$list.appendChild($loadingImg);
+// var $list = document.querySelector('.pinned-repos-list');
+// $list.appendChild($loadingImg);
 
 var isFetching = false;
 
 $list.addEventListener('scroll', function (e) {
+  if (allTaskEnd) {
+    return;
+  }
   if (isTopBorderInViewport($list, $loadingImg) && !isFetching) {
-    fetchData(year, part);
+    // fetchData(year, part);
   }
 });

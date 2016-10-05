@@ -7,7 +7,7 @@
 
     "permissions": [
         "activeTab",
-        "https://3fe95389.ngrok.io/"
+        "https://83fc4e22.ngrok.io/"
     ],
 
     "web_accessible_resources": [
@@ -28,6 +28,7 @@
             "js": [
                 "bower_components/es6-promise/es6-promise.min.js",
                 "bower_components/fetch/fetch.js",
+                "bundle.js",
                 "contentscript.js"
             ],
             "run_at": "document_end",

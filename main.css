@@ -5,4 +5,20 @@
 .bluering-loading {
     margin-left: auto;
     margin-right: auto;
+    display: block;
+}
+
+.bluering-loadmore {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background-color: #F7F7F7;
+}
+
+.bluering-loadmore-text {
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    cursor: pointer;
+    text-align: center;
 }
