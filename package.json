@@ -1,0 +1,31 @@
+{
+  "name": "bluering-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tom76kimo/bluering-client.git"
+  },
+  "author": "react-md <tom76kimo@gmail.com> (http://react-md.github.io/mdor/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tom76kimo/bluering-client/issues"
+  },
+  "homepage": "https://github.com/tom76kimo/bluering-client",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "webpack": "^1.13.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0"
+  }
+}
