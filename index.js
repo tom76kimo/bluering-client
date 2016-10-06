@@ -172,11 +172,18 @@ class Main extends React.Component {
             };
           });
 
-          const { contributesList, year, part } = this.state;
+          const { year, part } = this.state;
           const renewedYearPartObject = renewYearPart(year, part);
+          let contributesList = [...this.state.contributesList, ...data];
+          let contributesListWithTitle = contributesList.map(entry => {
+            return entry.title;
+          });
+          contributesList = contributesList.filter((entry, index) => {
+            return contributesListWithTitle.indexOf(entry.title) === index;
+          });
 
           this.setState({
-            contributesList: [...this.state.contributesList, ...data],
+            contributesList,
             ...renewedYearPartObject,
             loading: false,
           })
