@@ -214,10 +214,16 @@ class Main extends React.Component {
 }
 
 let targetContainer = document.querySelector('.js-pinned-repos-reorder-form');
+let pinnedRepoList;
 if (!targetContainer) {
   targetContainer = document.createElement('div');
-  targetContainer.appendChild(document.querySelector('.pinned-repos-list'));
-  document.querySelector('.js-pinned-repos-reorder-container').appendChild(targetContainer);
+  pinnedRepoList = document.querySelector('.pinned-repos-list');
+  if (pinnedRepoList) {
+    targetContainer.appendChild(pinnedRepoList);
+    document.querySelector('.js-pinned-repos-reorder-container').appendChild(targetContainer);
+  }
 }
 
-ReactDom.render(<Main />, targetContainer);
+if (targetContainer) {
+  ReactDom.render(<Main />, targetContainer);
+}

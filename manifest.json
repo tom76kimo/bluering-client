@@ -20,16 +20,14 @@
                 "https://github.com/*"
             ],
             "exclude_matches": [
-                "https://github.com/*/*"
+                "https://github.com/*/*",
+                "https://github.com/search"
             ],
             "css": [
                 "main.css"
             ],
             "js": [
-                "bower_components/es6-promise/es6-promise.min.js",
-                "bower_components/fetch/fetch.js",
-                "bundle.js",
-                "contentscript.js"
+                "bundle.js"
             ],
             "run_at": "document_end",
             "all_frames": false
