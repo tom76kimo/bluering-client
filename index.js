@@ -144,7 +144,7 @@ class Main extends React.Component {
 
   renderLoadMoreComponent() {
     return (
-      <div onClick={this.fetchData} className="bluering-loadmore-text">Load More<span className="dropdown-caret"></span></div>
+      <div onClick={this.fetchData} className="bluering-loadmore-text">Load Next Time Slot<span className="dropdown-caret"></span></div>
     );
   }
 
