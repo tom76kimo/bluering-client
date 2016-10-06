@@ -25,3 +25,7 @@
     cursor: pointer;
     text-align: center;
 }
+
+.dropdown-caret {
+    margin-left: 2px;
+}
