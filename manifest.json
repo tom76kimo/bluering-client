@@ -7,7 +7,7 @@
 
     "permissions": [
         "activeTab",
-        "https://83fc4e22.ngrok.io/"
+        "https://bluering-server.herokuapp.com/"
     ],
 
     "web_accessible_resources": [

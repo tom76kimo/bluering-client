@@ -3,7 +3,8 @@ import ReactDom from 'react-dom';
 import parseOriginContributes from './lib/parseOriginContributes';
 import request from 'superagent';
 
-const endPoint = 'https://83fc4e22.ngrok.io/user/';
+const endPoint = 'https://bluering-server.herokuapp.com/user/';
+const githubAPI = 'https://api.github.com/repos/'
 
 function getLastYearDate() {
   var date = new Date();
@@ -52,8 +53,14 @@ function renewYearPart(year, part) {
 }
 
 class RepoItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...props,
+    };
+  }
   render() {
-    const { title, desc, stars, language } = this.props;
+    const { title, desc, stars, language } = this.state;
     const [ owner, repo ] = title.split('/');
     return (
         <li className="pinned-repo-item p-3 mb-3 border border-gray-dark rounded-1 js-pinned-repo-list-item public source reorderable">
@@ -77,14 +84,33 @@ class RepoItem extends React.Component {
         </li>
     );
   }
+  componentDidMount() {
+    const { title, desc, stars, language } = this.state;
+    if (desc && stars && language) {
+      return;
+    }
+    const [ owner, repo ] = title.split('/');
+    request
+      .get(githubAPI + `${owner}/${repo}`)
+      .then(res => {
+        return res.body;
+      })
+      .then(data => {
+        this.setState({
+          stars: data.stargazers_count,
+          language: data.language,
+          desc: data.description
+        })
+      })
+  }
 }
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
-    const contributesList = parseOriginContributes();
     const $userName = document.querySelector('.vcard-username');
     const userName = $userName.innerHTML.trim();
+    const contributesList = parseOriginContributes(userName);
     const lastYearDate = getLastYearDate();
     const yearParts = verifyParts(lastYearDate.year, lastYearDate.month);
     const { year, part } = yearParts;
@@ -134,6 +160,7 @@ class Main extends React.Component {
       .get(endPoint + userName + '/' + year + '-' + part)
       .type('json')
       .set('Accept', 'application/json')
+      .set('x-bluering', 'tom76kimo')
       .then((res) => {
         return res.body;
       })
@@ -154,6 +181,12 @@ class Main extends React.Component {
             loading: false,
           })
         }
+      })
+      .catch(err => {
+        console.warn(err);
+        this.setState({
+          loading: false,
+        });
       });
   }
 
