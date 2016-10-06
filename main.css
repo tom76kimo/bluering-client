@@ -5,7 +5,10 @@
 .bluering-loading {
     margin-left: auto;
     margin-right: auto;
-    display: block;
+    width: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
 }
 
 .bluering-loadmore {

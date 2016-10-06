@@ -100,7 +100,7 @@ class RepoItem extends React.Component {
         })
       })
       .catch(err => {
-        console.log(err)
+        console.warn(err)
       });
   }
 }
@@ -123,13 +123,15 @@ class Main extends React.Component {
       loading: false,
     };
 
+    this.stepMessage = ['Fetching data...', 'Parsing Data...', 'Constructing Data...', 'Exporting Data...'];
+
     this.fetchData = this.fetchData.bind(this);
   }
   render() {
     const contributesListComponents = this.state.contributesList.map((entry, index) => {
       return <RepoItem {...entry} key={index} />;
     });
-    const loadMoreComponent = this.state.loading ? <img src={chrome.extension.getURL('loading.svg')} className="bluering-loading" /> : this.renderLoadMoreComponent();
+    const loadMoreComponent = this.state.loading ?  this.renderLoadingIcon(): this.renderLoadMoreComponent();
     return (
       <ol className="pinned-repos-list mb-4 js-pinned-repos-reorder-list">
         {contributesListComponents}
@@ -146,6 +148,15 @@ class Main extends React.Component {
     );
   }
 
+  renderLoadingIcon() {
+    return (
+      <div style={{textAlign: 'center', height: '100%'}}>
+        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>{this.state.loadingMessage}</div>
+        <img src={chrome.extension.getURL('loading.svg')} className="bluering-loading" />
+      </div>
+    );
+  }
+
   fetchData() {
     if (!!this.state.loading || !this.csrf) {
       return;
@@ -153,7 +164,10 @@ class Main extends React.Component {
 
     this.setState({
       loading: true,
+      loadingMessage: this.stepMessage[0],
     });
+
+    this.startMessageSteping();
 
     const { userName, year, part } = this.state;
     request
@@ -182,6 +196,7 @@ class Main extends React.Component {
             return contributesListWithTitle.indexOf(entry.title) === index;
           });
 
+          this.tearDownMessageSteping();
           this.setState({
             contributesList,
             ...renewedYearPartObject,
@@ -191,10 +206,28 @@ class Main extends React.Component {
       })
       .catch(err => {
         console.warn(err);
+        this.tearDownMessageSteping();
         this.setState({
           loading: false,
         });
       });
+  }
+
+  startMessageSteping() {
+    let messageStepCount = 1;
+    this.messageIntervalToken = setInterval(() => {
+      if (messageStepCount > 3) {
+        return;
+      }
+      this.setState({
+        loadingMessage: this.stepMessage[messageStepCount++],
+      });
+    }, 4000);
+  }
+
+  tearDownMessageSteping() {
+    clearInterval(this.messageIntervalToken);
+    this.messageIntervalToken = null;
   }
 
   getCSRF(callback) {

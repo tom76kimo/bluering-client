@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
 
-    "name": "Bluering Extension",
+    "name": "Bluering",
     "description": "Fetch all contributes by user",
     "version": "0.0.1",
 
