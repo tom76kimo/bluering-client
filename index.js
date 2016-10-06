@@ -36,9 +36,9 @@ function verifyParts(year, month) {
 }
 
 function renewYearPart(year, part) {
-  // if (year <= 0) {
-  //   allTaskEnd = true;
-  // }
+  if (year <= 10) {
+    return false;
+  }
   if (part == 1) {
     return {
       year: year - 1,
@@ -124,6 +124,7 @@ class Main extends React.Component {
     };
 
     this.stepMessage = ['Fetching data...', 'Parsing Data...', 'Constructing Data...', 'Exporting Data...'];
+    this.allTaskDone = false;
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -158,7 +159,7 @@ class Main extends React.Component {
   }
 
   fetchData() {
-    if (!!this.state.loading || !this.csrf) {
+    if (!!this.state.loading || !this.csrf || this.allTaskDone) {
       return;
     }
 
@@ -188,6 +189,9 @@ class Main extends React.Component {
 
           const { year, part } = this.state;
           const renewedYearPartObject = renewYearPart(year, part);
+          if (renewedYearPartObject === false) {
+            this.allTaskDone = true;
+          }
           let contributesList = [...this.state.contributesList, ...data];
           let contributesListWithTitle = contributesList.map(entry => {
             return entry.title;
