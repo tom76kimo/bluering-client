@@ -3,8 +3,8 @@ import ReactDom from 'react-dom';
 import parseOriginContributes from './lib/parseOriginContributes';
 import request from 'superagent';
 
-const endPoint = 'https://bluering-server.herokuapp.com/user/';
-const githubAPI = 'https://api.github.com/repos/'
+const endPoint = 'https://bluering-server.herokuapp.com/';
+const githubAPI = 'https://api.github.com/repos/';
 
 function getLastYearDate() {
   var date = new Date();
@@ -147,7 +147,7 @@ class Main extends React.Component {
   }
 
   fetchData() {
-    if (!!this.state.loading) {
+    if (!!this.state.loading || !this.csrf) {
       return;
     }
 
@@ -157,10 +157,10 @@ class Main extends React.Component {
 
     const { userName, year, part } = this.state;
     request
-      .get(endPoint + userName + '/' + year + '-' + part)
+      .post(endPoint + 'user/' + userName + '/' + year + '-' + part)
+      .send({_csrf: this.csrf})
       .type('json')
       .set('Accept', 'application/json')
-      .set('x-bluering', 'tom76kimo')
       .then((res) => {
         return res.body;
       })
@@ -197,8 +197,19 @@ class Main extends React.Component {
       });
   }
 
+  getCSRF(callback) {
+    request
+      .get(endPoint + 'token')
+      .then((res) => {
+        this.csrf = res.text;
+        callback && callback();
+      });
+  }
+
   componentDidMount() {
-    this.fetchData();
+    this.getCSRF(() => {
+      this.fetchData();
+    });
   }
 }
 
