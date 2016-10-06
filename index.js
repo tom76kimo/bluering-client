@@ -66,9 +66,6 @@ class RepoItem extends React.Component {
         <li className="pinned-repo-item p-3 mb-3 border border-gray-dark rounded-1 js-pinned-repo-list-item public source reorderable">
           <span className="pinned-repo-item-content">
             <span className="d-block">
-                <span className="pinned-repository-handle js-pinned-repository-reorder float-left pr-2" title="Drag to reorder">
-                  <svg aria-hidden="true" className="octicon octicon-grabber" height="16" version="1.1" viewBox="0 0 8 16" width="8"><path d="M8 4v1H0V4h8zM0 8h8V7H0v1zm0 3h8v-1H0v1z"></path></svg>
-                </span>
                 <a href="/doublespeakgames/adarkroom" className="text-bold mb-2">
               <span className="owner text-normal" title={owner}>{owner}</span>/<span className="repo js-repo" title={repo}>{repo}</span>
               </a>
@@ -86,7 +83,7 @@ class RepoItem extends React.Component {
   }
   componentDidMount() {
     const { title, desc, stars, language } = this.state;
-    if (desc && stars && language) {
+    if (stars || stars === 0) {
       return;
     }
     const [ owner, repo ] = title.split('/');
@@ -102,6 +99,9 @@ class RepoItem extends React.Component {
           desc: data.description
         })
       })
+      .catch(err => {
+        console.log(err)
+      });
   }
 }
 
@@ -202,4 +202,11 @@ class Main extends React.Component {
   }
 }
 
-ReactDom.render(<Main />, document.querySelector('.js-pinned-repos-reorder-form'));
+let targetContainer = document.querySelector('.js-pinned-repos-reorder-form');
+if (!targetContainer) {
+  targetContainer = document.createElement('div');
+  targetContainer.appendChild(document.querySelector('.pinned-repos-list'));
+  document.querySelector('.js-pinned-repos-reorder-container').appendChild(targetContainer);
+}
+
+ReactDom.render(<Main />, targetContainer);
