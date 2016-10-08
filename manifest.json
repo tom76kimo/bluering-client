@@ -3,7 +3,7 @@
 
     "name": "Bluering",
     "description": "Fetch all contributes by user",
-    "version": "0.0.2",
+    "version": "0.0.3",
 
     "permissions": [
         "activeTab",
